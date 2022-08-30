@@ -2212,6 +2212,9 @@ int InitSSL_Ctx(WOLFSSL_CTX* ctx, WOLFSSL_METHOD* method, void* heap)
             ctx->CBIORecvFrom = uIPRecvFrom;
         }
         #endif
+    #elif defined WOLFSSL_AMD_SVSM
+        /* We don't have our version of Embed{Send,Receive} to send/recv packets */
+        ctx->CBIORecv = ctx->CBIOSend = NULL;
     #else
         ctx->CBIORecv = EmbedReceive;
         ctx->CBIOSend = EmbedSend;

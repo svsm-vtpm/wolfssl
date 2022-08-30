@@ -202,7 +202,10 @@ int wc_RNG_GenerateByte(WC_RNG* rng, byte* b)
 #ifdef USE_WINDOWS_API
     #define USE_INTEL_INTRINSICS
 #elif !defined __GNUC__ || defined __clang__ || __GNUC__ > 4
+    /* Since we compile with -nostdinc, we don't have access to intrinsics from GCC */
+    #ifndef WOLFSSL_AMD_SVSM
     #define USE_INTEL_INTRINSICS
+    #endif
 #else
     #undef USE_INTEL_INTRINSICS
 #endif
