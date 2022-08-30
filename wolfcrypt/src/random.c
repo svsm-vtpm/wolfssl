@@ -1694,6 +1694,23 @@ static int wc_GenerateRand_IntelRD(OS_Seed* os, byte* output, word32 sz)
         return 0;
     }
 
+#elif defined(WOLFSSL_AMD_SVSM)
+int wc_GenerateSeed(OS_Seed* os, byte* output, word32 sz)
+{
+    int ret = 0;
+
+    (void)os; /* Suppress unused arg warning */
+    #if defined(HAVE_INTEL_RDSEED) || defined(HAVE_AMD_RDSEED)
+      if (IS_INTEL_RDSEED(intel_flags)) {
+            ret = wc_GenerateSeed_IntelRD(NULL, output, sz);
+            if (ret == 0) {
+                /* success, we're done */
+                return ret;
+            }
+      }
+    #endif
+    return ret;
+}
 #elif defined(WOLFSSL_SGX)
 
 int wc_GenerateSeed(OS_Seed* os, byte* output, word32 sz)
