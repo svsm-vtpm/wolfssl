@@ -111,7 +111,10 @@ extern "C" {
 /* ------------------------------------------------------------------------- */
 /* Disable all TLS support, only wolfCrypt features */
 //#define WOLFCRYPT_ONLY
+#define NO_OLD_WC_NAMES
+#define NO_OLD_SSL_NAMES
 #define NO_OLD_SHA_NAMES
+//#define NO_OLD_MD5_NAME
 //#define NO_WOLFSSL_SERVER
 #define NO_WOLFSSL_CLIENT
 #define NO_OLD_TLS
