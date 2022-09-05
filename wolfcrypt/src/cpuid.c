@@ -24,6 +24,7 @@
     #include <config.h>
 #endif
 
+#include "user_settings.h"
 #include <wolfssl/wolfcrypt/settings.h>
 
 #include <wolfssl/wolfcrypt/cpuid.h>
@@ -34,11 +35,29 @@
      */
 
     #ifndef _MSC_VER
+        #ifdef WOLFSSL_AMD_SVSM
+        struct regs {
+          word32 eax;
+          word32 ebx;
+          word32 ecx;
+          word32 edx;
+        };
+        extern struct regs vc_cpuid_ext(word32 leaf, word32 sub);
+        static inline void cpuid(unsigned int *reg, word32 leaf, word32 sub);
+        static inline void cpuid(unsigned int *reg, word32 leaf, word32 sub) {
+          struct regs regs = vc_cpuid_ext(leaf, sub);
+          reg[0] = regs.eax;
+          reg[1] = regs.ebx;
+          reg[2] = regs.ecx;
+          reg[3] = regs.edx;
+        }
+        #else
         #define cpuid(reg, leaf, sub)\
             __asm__ __volatile__ ("cpuid":\
                 "=a" ((reg)[0]), "=b" ((reg)[1]), "=c" ((reg)[2]), "=d" ((reg)[3]) :\
                 "a" (leaf), "c"(sub));
 
+        #endif
         #define XASM_LINK(f) asm(f)
     #else
         #include <intrin.h>
