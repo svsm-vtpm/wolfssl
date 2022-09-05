@@ -2334,10 +2334,10 @@ enum {
 
     X509_R_CERT_ALREADY_IN_HASH_TABLE = 101,
 
-    CRYPTO_LOCK = 1,
+    //CRYPTO_LOCK = 1,
     CRYPTO_NUM_LOCKS = 10,
 
-    ASN1_STRFLGS_ESC_MSB = 4
+    //ASN1_STRFLGS_ESC_MSB = 4
 };
 #endif
 
